@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 typedef struct {
     int id;
     char nome[51];
@@ -44,6 +46,8 @@ int main() {
     int n = total_linhas;
     int read = 0;
     int records = 0;
+    clock_t inicio, fim;
+    double tempo_gasto;
 
     int id_procurar = 213256; //ID DE PROCURA
 
@@ -68,6 +72,8 @@ while (records < total_linhas && fgets(line, sizeof(line), file)) {
     printf("------------------------------------TOTAL DE LINHAS--------------------------------------------\n");
     printf("Total de linhas do arquivo é: %d\n", total_linhas);
     printf("------------------------------------RESULTADO DA BUSCA POR ID--------------------------------------------\n");
+    //inicio da contagem de tempo
+    inicio = clock();
     printf("ID\t| NOME\t\t\t\t| CATEGORIA\t\t| VALOR\n");
     for (int i = 0; i < records; i++) {
         if(id_procurar == produto[i].id ){
@@ -82,6 +88,12 @@ while (records < total_linhas && fgets(line, sizeof(line), file)) {
     if(confirmador != 1){
         printf("Valor não encontrado\n");
     }
+    //fim da contagem de tempo
+      fim = clock();
+
+    // Tempo em segundos
+    tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+    printf("Tempo de execução: %f segundos\n", tempo_gasto);
     printf("---------------------------------------------------------------------------------------------\n");
     free(produto);
     return 0;
