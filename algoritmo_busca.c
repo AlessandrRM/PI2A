@@ -70,7 +70,7 @@ while (records < total_linhas && fgets(line, sizeof(line), file)) {
     fclose(file);
 
     printf("------------------------------------TOTAL DE LINHAS--------------------------------------------\n");
-    printf("Total de linhas do arquivo é: %d\n", total_linhas);
+    printf("Total de linhas do arquivo e: %d\n", total_linhas);
     printf("------------------------------------RESULTADO DA BUSCA POR ID--------------------------------------------\n");
     //inicio da contagem de tempo
     inicio = clock();
@@ -86,14 +86,14 @@ while (records < total_linhas && fgets(line, sizeof(line), file)) {
             break;
     }}
     if(confirmador != 1){
-        printf("Valor não encontrado\n");
+        printf("Valor nao encontrado\n");
     }
     //fim da contagem de tempo
-      fim = clock();
+    fim = clock();
 
     // Tempo em segundos
     tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
-    printf("Tempo de execução: %f segundos\n", tempo_gasto);
+    printf("Tempo de execucao: %f segundos\n", tempo_gasto);
     printf("---------------------------------------------------------------------------------------------\n");
     free(produto);
     return 0;
