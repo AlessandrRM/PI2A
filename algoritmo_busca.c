@@ -49,7 +49,6 @@
         Produto *produto = (Produto *) malloc(total_linhas * sizeof(Produto));
         char line[1024];
 
-        // ignora cabecalho
         fgets(line, sizeof(line), file);
 
         while (records < total_linhas && fgets(line, sizeof(line), file)) {
@@ -71,7 +70,7 @@
         printf("Total de linhas do arquivo eh: %d\n", total_linhas);
 
         // =====================================================
-        // 🔍 PARTE 1 - BUSCA SIMPLES POR ID
+        // 🔍 BUSCA SIMPLES
         // =====================================================
 
         printf("------------------------------------RESULTADO DA BUSCA POR ID--------------------------------------------\n");
@@ -111,12 +110,11 @@
 
 
         // =====================================================
-        // 📊 PARTE 2 - EXPERIMENTO COM 1000 BUSCAS
+        // 📊 EXPERIMENTO
         // =====================================================
 
         printf("------------------------------------EXECUCAO DAS BUSCAS--------------------------------------------\n");
-        printf("Foram realizadas 1000 buscas por IDs aleatorios.\n");
-        printf("Divididas em tres regioes: INICIO, MEIO e FIM.\n\n");
+        printf("Exibindo algumas buscas com dados completos:\n\n");
 
         srand(time(NULL));
 
@@ -146,13 +144,13 @@
             }
 
             int id_rand = produto[indice_aleatorio].id;
-            confirmador = 0;
+            int posicao = -1;
 
             inicio = clock();
 
             for (int i = 0; i < records; i++) {
                 if (id_rand == produto[i].id) {
-                    confirmador = 1;
+                    posicao = i;
                     break;
                 }
             }
@@ -161,24 +159,23 @@
 
             tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
 
-            if (j < buscas_por_regiao) {
-                tempo_inicio += tempo_gasto;
-            } 
-            else if (j < 2 * buscas_por_regiao) {
-                tempo_meio += tempo_gasto;
-            } 
-            else {
-                tempo_fim += tempo_gasto;
-            }
+            if (j < buscas_por_regiao) tempo_inicio += tempo_gasto;
+            else if (j < 2 * buscas_por_regiao) tempo_meio += tempo_gasto;
+            else tempo_fim += tempo_gasto;
 
-            // Mostrar exemplos das 3 regioes
+            // MOSTRAR dados completos
             if (
                 j < 2 || 
                 (j >= buscas_por_regiao && j < buscas_por_regiao + 2) || 
                 j >= total_buscas - 2
             ) {
-                printf("Busca %d | Regiao: %s | ID: %d | Tempo: %f segundos\n",
-                    j + 1, regiao, id_rand, tempo_gasto);
+                printf("Busca %d | %s\n", j + 1, regiao);
+                printf("ID: %d | Nome: %s | Categoria: %s | Valor: R$ %.2f\n",
+                    produto[posicao].id,
+                    produto[posicao].nome,
+                    produto[posicao].categoria,
+                    produto[posicao].valor);
+                printf("Tempo: %f segundos\n\n", tempo_gasto);
             }
         }
 
@@ -189,14 +186,11 @@
         double tempo_total = tempo_inicio + tempo_meio + tempo_fim;
         double media_geral = tempo_total / total_buscas;
 
-        printf("\n------------------------------------RESULTADO FINAL--------------------------------------------\n");
-
-        printf("Total de buscas realizadas: %d\n\n", total_buscas);
+        printf("------------------------------------RESULTADO FINAL--------------------------------------------\n");
 
         printf("Tempo medio - INICIO: %f segundos\n", media_inicio);
         printf("Tempo medio - MEIO:   %f segundos\n", media_meio);
-        printf("Tempo medio - FIM:    %f segundos\n\n", media_fim);
-
+        printf("Tempo medio - FIM:    %f segundos\n", media_fim);
         printf("Tempo medio GERAL:    %f segundos\n", media_geral);
 
         printf("---------------------------------------------------------------------------------------------\n");
