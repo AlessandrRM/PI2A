@@ -1,5 +1,0 @@
-1- Abra o docker desktop no computador;
-2- Na pasta onde se encontra o arquivo "docker-compose.yml" rode no terminal (docker compose up -d);
-3- Para entrar na aplicação docker, digite (docker exec -it pi2 bash);
-4- Assim que entrar no docker, digite (gcc -o algoritmo_busca algoritmo_busca.c) para gerar o compilador;
-5- Após isso, dê o comando (./algoritmo_busca) para executar o programa.
