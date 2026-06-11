@@ -2,13 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-typedef struct {
-    int id;
-    char nome[51];
-    char categoria[31];
-    float valor;
-} Produto;
+#include "tabela_hash.h"
+#include "produto.h"
 
 
 int buscaSequencial(Produto *vetor, int tamanho, int id) {
@@ -154,17 +149,35 @@ int total_ids_teste = sizeof(ids_teste) / sizeof(ids_teste[0]);
     }
     fclose(file);
 
-    printf("Dataset carregado: %d registros.\n", total_carregado);
+printf("Dataset carregado: %d registros.\n", total_carregado);
 
-    
-    double soma_tempos_medios = 0;
+/* CRIA A TABELA HASH */
+HashTable *tabela = criarTabelaHash(total_carregado);
+
+/* INSERE TODOS OS PRODUTOS */
+for (int i = 0; i < total_carregado; i++) {
+    inserirHash(tabela, vetor[i]);
+}
+
+double soma_tempos_medios = 0;
 
     for (int r = 1; r <= 3; r++) {
         clock_t inicio = clock();
 
-        for (int i = 0; i < total_ids_teste; i++) {
-            buscaSequencial(vetor, total_carregado, ids_teste[i]);
-        }
+for (int i = 0; i < total_ids_teste; i++) {
+
+    Produto *resultado = buscarHash(tabela, ids_teste[i]);
+
+    if (resultado != NULL) {
+    printf("Encontrado: %d - %s\n",
+        resultado->id,
+        resultado->nome);
+}
+
+    if (resultado == NULL) {
+        printf("ID %d nao encontrado\n", ids_teste[i]);
+    }
+}
 
         clock_t fim = clock();
         double tempo_total = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
@@ -174,9 +187,12 @@ int total_ids_teste = sizeof(ids_teste) / sizeof(ids_teste[0]);
         printf("Rodada %d | Tempo Total: %.6f s | Tempo Medio: %.8f s\n", r, tempo_total, tempo_medio);
     }
 
-    printf("\n--- RESULTADO FINAL ---\n");
-    printf("Media final de tempo por busca (3 rodadas): %.8f segundos\n", soma_tempos_medios / 3);
+printf("\n--- RESULTADO FINAL ---\n");
+printf("Media final de tempo por busca (3 rodadas): %.8f segundos\n", soma_tempos_medios / 3);
 
+printf("Total de colisoes: %d\n", tabela->colisoes);
+
+    liberarHash(tabela);
     free(vetor);
     return 0;
 }

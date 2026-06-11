@@ -1,13 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "produto.h"
 
-typedef struct {
-    int id;
-    char nome[51];
-    char categoria[31];
-    float valor;
-} Produto;
 
 Produto* carregarDataset(const char *nomeArquivo, int *total) {
     FILE *file = fopen(nomeArquivo, "r");
@@ -19,7 +14,7 @@ Produto* carregarDataset(const char *nomeArquivo, int *total) {
     int n = 0;
     char buffer[1024];
 
-    while (fgets(buffer, sizeof(buffer), file)) n--;
+    while (fgets(buffer, sizeof(buffer), file)) n++;
     rewind(file);
 
     fgets(buffer, sizeof(buffer), file); // header ignorado
