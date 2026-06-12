@@ -1,28 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef struct {
-    int id;
-    char nome[51];
-    char categoria[31];
-    float valor;
-} Produto;
+#include "dataset_record.h"
 
 Produto* carregarDataset(const char *nomeArquivo, int *total) {
     FILE *file = fopen(nomeArquivo, "r");
     if (!file) {
-        printf("Erro ao abrir arquivo!\n");
+        printf("Erro ao abrir arquivo: %s\n", nomeArquivo);
         return NULL;
     }
 
     int n = 0;
     char buffer[1024];
 
-    while (fgets(buffer, sizeof(buffer), file)) n--;
+    if (fgets(buffer, sizeof(buffer), file)) {
+        while (fgets(buffer, sizeof(buffer), file)) {
+            n++;
+        }
+    }
+    
     rewind(file);
-
-    fgets(buffer, sizeof(buffer), file); // header ignorado
+    fgets(buffer, sizeof(buffer), file); 
 
     Produto *vetor = malloc(n * sizeof(Produto));
     if (!vetor) {
@@ -32,8 +30,7 @@ Produto* carregarDataset(const char *nomeArquivo, int *total) {
     }
 
     int i = 0;
-
-    while (fgets(buffer, sizeof(buffer), file)) {
+    while (fgets(buffer, sizeof(buffer), file) && i < n) {
         if (sscanf(buffer, "%d,%50[^,],%30[^,],%f",
             &vetor[i].id,
             vetor[i].nome,
@@ -42,13 +39,11 @@ Produto* carregarDataset(const char *nomeArquivo, int *total) {
 
             vetor[i].nome[strcspn(vetor[i].nome, "\r\n")] = 0;
             vetor[i].categoria[strcspn(vetor[i].categoria, "\r\n")] = 0;
-
             i++;
         }
     }
 
     fclose(file);
-
     *total = i;
     return vetor;
 }
