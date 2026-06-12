@@ -71,7 +71,7 @@ int main() {
     int totalRegistros = 0;
     
     printf("Carregando dataset4.csv...\n");
-    Produto *datasetVetor = carregarDataset("dataset4.csv", &totalRegistros);
+    Produto *datasetVetor = carregarDataset("../dataset4.csv", &totalRegistros);
     if (!datasetVetor) return 1;
 
     int m = totalRegistros; 
@@ -83,7 +83,7 @@ int main() {
     }
 
     int idsBusca[1000];
-    int totalIds = carregarIdsBusca("fase1/ids_extraidos.txt", idsBusca);
+    int totalIds = carregarIdsBusca("../fase1/ids_extraidos.txt", idsBusca);
     if (totalIds < 1000) {
         printf("Aviso: Apenas %d IDs carregados do arquivo.\n", totalIds);
     }
