@@ -123,7 +123,8 @@ int main() {
     double medHashFim    = hashFimAcumulado / 3.0;
     double totalMediaHash = medHashInicio + medHashMeio + medHashFim;
 
-
+    printf("\n=================================================================\n");
+    printf("                         TABELA HASH                               \n");
     printf("=================================================================\n");
     printf("Quantidade total de registros carregados : %d\n", totalRegistros);
     printf("Número total de colisões detectadas      : %d\n", colisoesTotais);
